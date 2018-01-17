@@ -1,0 +1,8 @@
+// Grid Configuration
+// based on 12 grid columns
+// default gutter is 30px
+@mixin grid-col($col-number, $gutter: 30) {
+  width: calc(#{100 * ($col-number / 12)}% - #{$gutter * 2}px);
+  float: left;
+  margin-left: #{$gutter}px;
+}
