@@ -16,8 +16,8 @@ const App = () => (
       <p>- redux saga</p>
       <p>- redux logger</p>
       <p>- react router</p>
-      <p>- sass loader (make sure to import the `.css` file generated)</p>
-      <p>  - 12 column sass grid system</p>
+      <p>- scss loader (make sure to import the `.css` file generated)</p>
+      <p>  - 12 column scss grid system</p>
       <p>- immutable</p>
       <p>- flow</p>
       <p>- eslint</p>

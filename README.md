@@ -3,8 +3,8 @@ React Redux Starter:
 - redux saga
 - redux logger
 - react router
-- sass loader (make sure to import the `.css` file generated)
-  - 12 column sass grid system
+- scss loader (make sure to import the `.css` file generated)
+  - 12 column scss grid system
 - immutable
 - flow
 - eslint
