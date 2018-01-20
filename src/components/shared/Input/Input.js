@@ -1,6 +1,8 @@
+// @flow
+
 import React from 'react';
+
 const renderInput = (props) => {
-  console.log(props.field, props.type);
   if (props.textArea) {
     return (
       <textarea cols="30" rows="5"
