@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Props } from '../../../flow/shared/company-list-types';
 
 const renderCompanies = (companies) => {
   if (companies) {
@@ -19,7 +20,7 @@ const renderCompanies = (companies) => {
   return null;
 }
 
-export default (props) => {
+export default (props: Props) => {
   return (
     <div className="company-list">
       {renderCompanies(props.companies)}

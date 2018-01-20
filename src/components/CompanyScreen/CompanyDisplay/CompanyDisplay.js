@@ -1,12 +1,13 @@
 // @flow
 
 import React, { Component } from 'react';
-import toCurrency from '../../helpers/to-currency';
-import Countdown from '../shared/Countdown/Countdown';
-import Button from '../shared/Button/Button';
+import toCurrency from '../../../helpers/to-currency';
+import Countdown from '../../shared/Countdown/Countdown';
+import Button from '../../shared/Button/Button';
+import { Props, State } from '../../../flow/components/company-display-types';
 
-class CompanyDisplay extends Component {
-  constructor(props) {
+class CompanyDisplay extends Component<Props, State> {
+  constructor(props: Props) {
     super (props);
 
     this.state = {

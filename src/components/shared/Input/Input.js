@@ -1,6 +1,7 @@
 // @flow
 
 import React from 'react';
+import { Props } from '../../../flow/shared/input-types';
 
 const renderInput = (props) => {
   if (props.textArea) {
@@ -23,7 +24,7 @@ const renderInput = (props) => {
     />
   );
 }
-export default (props) => (
+export default (props: Props) => (
   <div className="input__container">
     {props.title && <div className="input__title">{props.title}</div>}
     {props.prefix && <span className="prefix">{props.prefix}</span>}

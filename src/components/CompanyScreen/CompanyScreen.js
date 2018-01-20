@@ -5,12 +5,13 @@ import { withRouter } from 'react-router-dom';
 import { graphql, compose } from 'react-apollo';
 import { fetchCompany } from './company-screen-queries';
 import { updateCompany, destroyCompany } from './company-screen-mutations';
-import CompanyDisplay from '../CompanyDisplay/CompanyDisplay';
+import CompanyDisplay from './CompanyDisplay/CompanyDisplay';
 import VentureCapitalistList from '../VentureCapitalist/VentureCapatalistList';
 import Button from '../shared/Button/Button';
 import CompanyForm from '../shared/CompanyForm/CompanyForm';
+import { Props, State } from '../../flow/components/company-screen-types'
 
-class CompanyScreen extends Component {
+class CompanyScreen extends Component<Props, State> {
   constructor(props) {
     super(props);
 
@@ -26,6 +27,7 @@ class CompanyScreen extends Component {
     // handle company not found
     console.log('NEXT', nextProps.data.error);
   }
+  handleUpdateCompany: () => void;
   handleUpdateCompany(args) {
     this.props.updateCompany({ variables: {
         id: this.props.data.getCompany.slug,
@@ -36,16 +38,17 @@ class CompanyScreen extends Component {
         if (updatedAt !== this.props.data.getCompany.updated_at) {
           this.handleEditClick();
           this.props.data.refetch();
-          console.log(this.props.re);
         }
       });
   }
-  handleDeleteCompany(slug) {
+  handleDeleteCompany: (slug: string) => void;
+   handleDeleteCompany(slug) {
     this.props.destroyCompany({ variables: { id: slug }
     }).then((data) => {
         data.data.destroyCompany.slug && this.props.history.push(`/`);
       });
   }
+  handleEditClick: () => void;
   handleEditClick() {
     const display = this.state.display === 'show' ? 'edit' : 'show';
     this.setState({ display });

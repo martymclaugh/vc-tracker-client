@@ -3,11 +3,12 @@
 import React, { Component } from 'react';
 import Input from '../../shared/Input/Input';
 import Button from '../../shared/Button/Button';
+import { Props, State } from '../../../flow/shared/company-form-types';
 
 import companyInputs from './company-inputs';
 
-class CompanyForm extends Component {
-  constructor(props) {
+class CompanyForm extends Component<Props, State> {
+  constructor(props: Props) {
     super(props);
 
     this.state = {
@@ -34,7 +35,8 @@ class CompanyForm extends Component {
       });
       console.log(this.state);
   }
-  handleCreateCompany(event) {
+  handleCreateCompany: (event: any) => void;
+  handleCreateCompany(event: any) {
     event.preventDefault();
     // check inputs for values
     let blankInputs = 0;
@@ -51,7 +53,8 @@ class CompanyForm extends Component {
       this.props.onSubmit(this.state.form);
     }
   }
-  handleKeyPress(e, field) {
+  handleKeyPress: (e: any, field: string) => void;
+  handleKeyPress(e: any, field: string) {
     let val;
     const value = e.target.value
 
@@ -70,6 +73,7 @@ class CompanyForm extends Component {
       }
     });
   }
+  renderInputs: () => void;
   renderInputs() {
     const { defaultValues } = this.props;
     return Object.keys(companyInputs).map(key => (
