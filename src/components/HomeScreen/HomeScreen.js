@@ -4,7 +4,8 @@ import React, { Component } from 'react';
 import { graphql, compose } from 'react-apollo';
 import { createCompany } from './home-screen-mutations';
 import { fetchAllCompanies } from './home-screen-queries';
-import CompanyForm from '../shared/CompanyForm/CompanyForm';
+import Form from '../shared/Form/Form';
+import { initialFormState, companyInputs } from '../../helpers/company-inputs';
 import CompanyList from '../shared/CompanyList/CompanyList';
 import { Props, State } from '../../flow/components/home-screen-types';
 
@@ -25,15 +26,18 @@ class HomeScreen extends Component<Props, State> {
     this.props.createCompany({ variables: args })
       .then((data) => {
         const slug = data.data.createCompany.slug
-        slug && this.props.history.push(`/company/${slug}`);
+        slug && this.props.history.push(`/companies/${slug}`);
       });
   }
   render() {
     return (
       <div className="home-screen">
         Home Screen
-        <CompanyForm
+        <Form
           onSubmit={this.handleCreateCompany}
+          inputs={companyInputs}
+          initialFormState={initialFormState}
+          formType="company"
         />
         <CompanyList
           companies={this.props.allCompanies.getCompanies}
