@@ -3,7 +3,7 @@ import { CompanyType } from '../shared/company-type';
 export type Props = {
   destroyCompany: () => void;
   data: {
-    getCompany: CompanyType
+    getCompany: CompanyType,
     refetch: () => void,
     loading: boolean,
   },

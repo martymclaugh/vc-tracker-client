@@ -1,5 +1,4 @@
 import gql from 'graphql-tag';
-import { ventureCapitalistFragment } from '../../graphql/shared-queries';
 
 export const fetchCompany = gql`
   query getCompany($id: ID!) {
