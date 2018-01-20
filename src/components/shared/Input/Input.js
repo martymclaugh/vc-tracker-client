@@ -7,6 +7,7 @@ const renderInput = (props) => {
     return (
       <textarea cols="30" rows="5"
         className={`input input__${props.field}`}
+        defaultValue={props.defaultValue}
         placeholder={props.placeholder}
         onChange={(e) => props.handleKeyPress(e, props.field)}
       />
@@ -14,6 +15,7 @@ const renderInput = (props) => {
   }
   return (
     <input
+      defaultValue={props.defaultValue}
       className="input"
       placeholder={props.placeholder}
       onChange={(e) => props.handleKeyPress(e, props.field)}

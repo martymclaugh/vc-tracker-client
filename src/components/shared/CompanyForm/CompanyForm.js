@@ -25,15 +25,24 @@ class CompanyForm extends Component {
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.renderInputs = this.renderInputs.bind(this);
   }
-
+  componentDidMount() {
+    const { defaultValues } = this.props
+      defaultValues && this.setState({
+        form: {
+          ...defaultValues
+        }
+      });
+      console.log(this.state);
+  }
   handleCreateCompany(event) {
     event.preventDefault();
     // check inputs for values
     let blankInputs = 0;
     Object.keys(this.state.form).forEach(key => {
-      if (!this.state.form[key]) {
+      if (!this.state.form[key] && this.state.form[key] !== 0) {
         blankInputs ++
       }
+      console.log(this.state.form[key], blankInputs);
     });
     const error = blankInputs > 0 && 'All fields are required'
     this.setState({ error });
@@ -62,6 +71,7 @@ class CompanyForm extends Component {
     });
   }
   renderInputs() {
+    const { defaultValues } = this.props;
     return Object.keys(companyInputs).map(key => (
       <Input
         key={`company ${companyInputs[key].field}`}
@@ -71,12 +81,13 @@ class CompanyForm extends Component {
         textArea={companyInputs[key].textArea}
         type={companyInputs[key].type}
         prefix={companyInputs[key].prefix}
+        defaultValue={defaultValues && defaultValues[key]}
       />
     ))
   }
   render() {
     const error = this.state.error && <div className="error">{this.state.error}</div>
-
+    console.log(this.state);
     return (
       <div className="company-form">
         <form action="." onSubmit={(event) => this.handleCreateCompany(event)}>
