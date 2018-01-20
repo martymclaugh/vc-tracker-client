@@ -14,6 +14,14 @@ const renderInput = (props) => {
       />
     );
   }
+  if (props.dropdown) {
+    const options = props.options.map(option => <option value={option}>{option}</option>)
+    return (
+      <select>
+        {options}
+      </select>
+    )
+  }
   return (
     <input
       defaultValue={props.defaultValue}
