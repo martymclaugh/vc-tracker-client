@@ -4,18 +4,25 @@ import React, { Component } from 'react';
 import { graphql, compose } from 'react-apollo';
 import { createCompany } from './home-screen-mutations';
 import { fetchAllCompanies } from './home-screen-queries';
-import CompanyForm from '../Company/CompanyForm/CompanyForm';
-import CompanyList from '../Company/CompanyList/CompanyList';
+import CompanyForm from '../shared/CompanyForm/CompanyForm';
+import CompanyList from '../shared/CompanyList/CompanyList';
+import { Props, State } from '../../flow/components/home-screen-types';
 
 
-class HomeScreen extends Component {
+class HomeScreen extends Component<Props, State> {
   constructor(props) {
     super (props);
 
+    this.state = {};
+
     this.handleCreateCompany = this.handleCreateCompany.bind(this);
   }
+  componentWillReceiveProps(nextProps) {
+    nextProps.allCompanies.refetch();
+  }
+  handleCreateCompany: () => void;
   handleCreateCompany(args) {
-    this.props.mutate({ variables: args })
+    this.props.createCompany({ variables: args })
       .then((data) => {
         const slug = data.data.createCompany.slug
         slug && this.props.history.push(`/company/${slug}`);
@@ -37,6 +44,6 @@ class HomeScreen extends Component {
 }
 
 export default compose(
-    graphql(createCompany),
+    graphql(createCompany, { name: 'createCompany' }),
     graphql(fetchAllCompanies, { name: 'allCompanies' })
 )(HomeScreen);

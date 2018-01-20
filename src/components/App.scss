@@ -1,7 +1,0 @@
-@import '../assets/styles/settings.scss';
-
-.App {
-  background-color: gray;
-
-  @include grid-col(12, 30);
-}

@@ -3,11 +3,12 @@
 import React, { Component } from 'react';
 import Input from '../../shared/Input/Input';
 import Button from '../../shared/Button/Button';
+import { Props, State } from '../../../flow/shared/company-form-types';
 
 import companyInputs from './company-inputs';
 
-class CompanyForm extends Component {
-  constructor(props) {
+class CompanyForm extends Component<Props, State> {
+  constructor(props: Props) {
     super(props);
 
     this.state = {
@@ -25,15 +26,25 @@ class CompanyForm extends Component {
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.renderInputs = this.renderInputs.bind(this);
   }
-
-  handleCreateCompany(event) {
+  componentDidMount() {
+    const { defaultValues } = this.props
+      defaultValues && this.setState({
+        form: {
+          ...defaultValues
+        }
+      });
+      console.log(this.state);
+  }
+  handleCreateCompany: (event: any) => void;
+  handleCreateCompany(event: any) {
     event.preventDefault();
     // check inputs for values
     let blankInputs = 0;
     Object.keys(this.state.form).forEach(key => {
-      if (!this.state.form[key]) {
+      if (!this.state.form[key] && this.state.form[key] !== 0) {
         blankInputs ++
       }
+      console.log(this.state.form[key], blankInputs);
     });
     const error = blankInputs > 0 && 'All fields are required'
     this.setState({ error });
@@ -42,7 +53,8 @@ class CompanyForm extends Component {
       this.props.onSubmit(this.state.form);
     }
   }
-  handleKeyPress(e, field) {
+  handleKeyPress: (e: any, field: string) => void;
+  handleKeyPress(e: any, field: string) {
     let val;
     const value = e.target.value
 
@@ -61,7 +73,9 @@ class CompanyForm extends Component {
       }
     });
   }
+  renderInputs: () => void;
   renderInputs() {
+    const { defaultValues } = this.props;
     return Object.keys(companyInputs).map(key => (
       <Input
         key={`company ${companyInputs[key].field}`}
@@ -71,12 +85,13 @@ class CompanyForm extends Component {
         textArea={companyInputs[key].textArea}
         type={companyInputs[key].type}
         prefix={companyInputs[key].prefix}
+        defaultValue={defaultValues && defaultValues[key]}
       />
     ))
   }
   render() {
     const error = this.state.error && <div className="error">{this.state.error}</div>
-
+    console.log(this.state);
     return (
       <div className="company-form">
         <form action="." onSubmit={(event) => this.handleCreateCompany(event)}>
