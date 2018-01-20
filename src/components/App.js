@@ -4,13 +4,16 @@ import {
   Route,
 } from 'react-router-dom';
 import HomeScreen from './HomeScreen/HomeScreen';
+import CompanyScreen from './CompanyScreen/CompanyScreen';
 
-import './App.css';
 import '../assets/styles/base.css';
 
 const App = () => (
   <Router>
-    <Route path="/" exact component={HomeScreen} />
+    <div className="routes">
+      <Route path="/" exact component={HomeScreen} />
+      <Route path="/company/:slug" component={CompanyScreen} />
+    </div>
   </Router>
 );
 
