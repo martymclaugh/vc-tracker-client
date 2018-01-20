@@ -4,8 +4,8 @@ import React, { Component } from 'react';
 import { graphql, compose } from 'react-apollo';
 import { createCompany } from './home-screen-mutations';
 import { fetchAllCompanies } from './home-screen-queries';
-import CompanyForm from '../Company/CompanyForm/CompanyForm';
-import CompanyList from '../Company/CompanyList/CompanyList';
+import CompanyForm from '../shared/CompanyForm/CompanyForm';
+import CompanyList from '../shared/CompanyList/CompanyList';
 
 
 class HomeScreen extends Component {
@@ -15,11 +15,14 @@ class HomeScreen extends Component {
     this.handleCreateCompany = this.handleCreateCompany.bind(this);
   }
   handleCreateCompany(args) {
-    this.props.mutate({ variables: args })
+    this.props.createCompany({ variables: args })
       .then((data) => {
         const slug = data.data.createCompany.slug
         slug && this.props.history.push(`/company/${slug}`);
       });
+  }
+  componentWillReceiveProps(nextProps) {
+    nextProps.allCompanies.refetch();
   }
   render() {
     return (
@@ -37,6 +40,6 @@ class HomeScreen extends Component {
 }
 
 export default compose(
-    graphql(createCompany),
+    graphql(createCompany, { name: 'createCompany' }),
     graphql(fetchAllCompanies, { name: 'allCompanies' })
 )(HomeScreen);
