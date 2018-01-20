@@ -1,9 +1,11 @@
 // @flow
 
 import React, { Component } from 'react';
-import { graphql } from 'react-apollo';
-import CompanyForm from '../Company/CompanyForm/CompanyForm';
+import { graphql, compose } from 'react-apollo';
 import { createCompany } from './home-screen-mutations';
+import { fetchAllCompanies } from './home-screen-queries';
+import CompanyForm from '../Company/CompanyForm/CompanyForm';
+import CompanyList from '../Company/CompanyList/CompanyList';
 
 
 class HomeScreen extends Component {
@@ -13,7 +15,11 @@ class HomeScreen extends Component {
     this.handleCreateCompany = this.handleCreateCompany.bind(this);
   }
   handleCreateCompany(args) {
-    this.props.mutate({ variables: args });
+    this.props.mutate({ variables: args })
+      .then((data) => {
+        const slug = data.data.createCompany.slug
+        slug && this.props.history.push(`/company/${slug}`);
+      });
   }
   render() {
     return (
@@ -22,9 +28,15 @@ class HomeScreen extends Component {
         <CompanyForm
           onSubmit={this.handleCreateCompany}
         />
+        <CompanyList
+          companies={this.props.allCompanies.getCompanies}
+        />
       </div>
     )
   }
 }
 
-export default graphql(createCompany)(HomeScreen);
+export default compose(
+    graphql(createCompany),
+    graphql(fetchAllCompanies, { name: 'allCompanies' })
+)(HomeScreen);
