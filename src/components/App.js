@@ -3,25 +3,14 @@ import {
   BrowserRouter as Router,
   Route,
 } from 'react-router-dom';
+import HomeScreen from './HomeScreen/HomeScreen';
 
 import './App.css';
 import '../assets/styles/base.css';
 
 const App = () => (
   <Router>
-    <div className="App">
-      {/* <Route path="/home" component={HomeScreen} /> */}
-      <h3>React Redux Starter:</h3>
-      <p>- redux</p>
-      <p>- redux saga</p>
-      <p>- redux logger</p>
-      <p>- react router</p>
-      <p>- scss loader (make sure to import the `.css` file generated)</p>
-      <p>  - 12 column scss grid system</p>
-      <p>- immutable</p>
-      <p>- flow</p>
-      <p>- eslint</p>
-    </div>
+    <Route path="/" exact component={HomeScreen} />
   </Router>
 );
 
