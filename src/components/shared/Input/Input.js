@@ -19,7 +19,11 @@ const renderInput = (props) => {
   if (props.dropdown) {
     const options = props.options.map(option => <option value={option}>{option}</option>)
     return (
-      <select className={`input-select input__${props.field}`}>
+      <select
+        onChange={(e) => props.handleKeyPress(e, props.field)}
+        className={`input-select input__${props.field}`}
+        defaultValue={props.defaultValue}
+      >
         {options}
       </select>
     )
