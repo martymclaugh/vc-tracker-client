@@ -1,13 +1,13 @@
 export const initialFormState = {
   name: null,
-  affiliation: null,
+  affiliation: 'Individual',
   website: null,
   contact: null,
   check_size: null,
   investments_per_year: null,
-  status: null,
+  status: 'Contacted',
   location: null,
-  potential: null,
+  potential: 'High',
   interests: null,
 };
 
