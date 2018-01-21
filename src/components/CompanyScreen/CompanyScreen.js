@@ -42,11 +42,11 @@ class CompanyScreen extends Component<Props, State> {
       });
   }
   handleDeleteCompany: (slug: string) => void;
-   handleDeleteCompany(slug) {
-    this.props.destroyCompany({ variables: { id: slug }
-    }).then((data) => {
-        data.data.destroyCompany.slug && this.props.history.push(`/`);
-      });
+ handleDeleteCompany(slug) {
+  this.props.destroyCompany({ variables: { id: slug }})
+    .then((data) => {
+      data.data.destroyCompany.slug && this.props.history.push(`/`);
+    });
   }
   toggleEdit: () => void;
   toggleEdit() {
