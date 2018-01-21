@@ -2,7 +2,22 @@
 // based on 12 grid columns
 // default gutter is 30px
 @mixin grid-col($col-number, $gutter: 30) {
-  width: calc(#{100 * ($col-number / 12)}% - #{$gutter * 2}px);
+  width: calc(#{100 * ($col-number / 12)}% - #{$gutter}px);
   float: left;
   margin-left: #{$gutter}px;
 }
+
+$default-font-family: 'proxima-nova', sans-serif;
+
+$inset-shadow: 1px 1px 4px 1px rgba(0, 0, 0, 0.25) inset;
+
+$link-orange: #EFAC56;
+$light-gray: #c8c8c6;
+$medium-gray: #969690;
+$dark-gray: #5e5c58;
+$darker-gray: #413f3d;
+$light-gray-blue: #a4b4b6;
+
+$tablet-small: 600px;
+$tablet-medium: 768px;
+$tablet-large: 900px;
