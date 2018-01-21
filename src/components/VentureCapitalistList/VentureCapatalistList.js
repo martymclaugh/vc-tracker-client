@@ -1,46 +1,62 @@
+// @flow
+
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import toCurrency from '../../helpers/to-currency';
+import { Props, State } from '../../flow/components/vc-list-types';
 
 import './venture-capitalist-styles.css';
 
-class VentureCapitalistList extends Component {
-  constructor(props) {
+class VentureCapitalistList extends Component<Props, State> {
+  constructor(props: Props) {
     super(props);
 
-    this.state = {};
+    this.renderVentureCapitalists = this.renderVentureCapitalists.bind(this);
+    this.renderDescriptors = this.renderDescriptors.bind(this);
   }
-
+  renderVentureCapitalists: () => void;
   renderVentureCapitalists() {
     if (this.props.investors) {
       return this.props.investors.map(investor => (
-        <Link to={`/venture-capitalists/${investor.slug}`}>
-          <div key={investor.slug} className="vc__item">
-            <div className="item vc__name">{investor.name}</div>
-            <div className="item vc__contact">{investor.contact}</div>
-            <div className="item vc__location">{investor.location}</div>
-            <div className="item vc__name"></div>
-            <div className="item vc__potential">{investor.potential}</div>
-            <div className="item vc__status">{investor.status}</div>
-            <div className="item vc__typical-check">{investor.check_size}</div>
-          </div>
-        </Link>
+        <div key={investor.slug} className="vc__list-item">
+          <Link to={`/venture-capitalists/${investor.slug}`}>
+            <span className="item vc__name">{investor.name}</span>
+            <span className="item vc__contact">{investor.contact}</span>
+            <span className="item vc__location">{investor.location}</span>
+            <span className="item vc__potential">{investor.potential}</span>
+            <span className="item vc__status">{investor.status}</span>
+            <span className="item vc__typical-check">{toCurrency(investor.check_size)}</span>
+          </Link>
+        </div>
       ))
     }
-    return null;
+  }
+  handleSort: (sortBy: string) => void;
+  handleSort(sortBy: string) {
+    this.props.refetchByOrder(sortBy)
+  }
+  renderDescriptors: () => void;
+  renderDescriptors() {
+    const descriptors = ['name', 'contact', 'location', 'potential', 'status', 'check size'];
+    return descriptors.map(desc => (
+      <button
+        onClick={() => this.handleSort(desc.split(' ').join('_'))}
+        className={`item vc__${desc.split(' ').join('-')}`}
+      >
+        {desc}
+      </button>
+    ))
   }
   render() {
     return (
       <div className="vc__list">
-        <div className="vc__item vc_item-descriptors">
-          <div className="item vc__name">name</div>
-          <div className="item vc__contact">contact</div>
-          <div className="item vc__location">location</div>
-          <div className="item vc__name"></div>
-          <div className="item vc__potential">potential</div>
-          <div className="item vc__status">status</div>
-          <div className="item vc__typical-check">check_size</div>
+        <div className="vc__list-title">List of VCs:</div>
+        <div className="vc__item vc__item-descriptors">
+          {this.renderDescriptors()}
         </div>
-        {this.renderVentureCapitalists()}
+        <div className="vc__list-container">
+          {this.renderVentureCapitalists()}
+        </div>
       </div>
     )
   }
