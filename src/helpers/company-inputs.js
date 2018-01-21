@@ -19,18 +19,16 @@ export const companyInputs = {
   budget: {
     field: 'budget',
     placeholder: 'Budget Needed',
-    prefix: '$',
     type: 'number',
   },
   raised: {
     field: 'raised',
     placeholder: 'Amount Raised',
-    prefix: '$',
     type: 'number',
   },
   timeline: {
     field: 'timeline',
-    placeholder: 'Deadline',
+    title: 'Deadline: ',
     type: 'date',
   },
 };
