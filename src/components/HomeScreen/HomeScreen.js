@@ -39,6 +39,7 @@ class HomeScreen extends Component<Props, State> {
     this.setState({ displayForm: !this.state.displayForm });
   }
   render() {
+    const { getCompanies } = this.props.allCompanies;
     const form = this.state.displayForm && (
       <div className="home-screen__form">
         <Form
@@ -49,7 +50,7 @@ class HomeScreen extends Component<Props, State> {
         />
       </div>
     )
-    const chooseCompanyText = this.props.allCompanies.getCompanies && (
+    const chooseCompanyText = getCompanies && getCompanies.length > 0 && (
       <div>
         <h3 className="home-screen__title">- Or -</h3>
         <h3 className="home-screen__title">Choose from your existing companies:</h3>
@@ -67,7 +68,7 @@ class HomeScreen extends Component<Props, State> {
         {form}
         {chooseCompanyText}
         <CompanyList
-          companies={this.props.allCompanies.getCompanies}
+          companies={getCompanies}
         />
       </div>
     )

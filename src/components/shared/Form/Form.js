@@ -32,12 +32,10 @@ class Form extends Component<Props, State> {
   handleSubmit(event: any) {
     event.preventDefault();
     // check inputs for values
-    console.log('state', this.state);
     let blankInputs = 0;
     Object.keys(this.state.form).forEach(key => {
       if (!this.state.form[key] && this.state.form[key] !== 0) {
         blankInputs ++
-        console.log(key);
       }
     });
     const error = blankInputs > 0 && 'All fields are required'
