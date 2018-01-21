@@ -36,7 +36,11 @@ class VentureCapitalistScreen extends Component<Props, State> {
       }
     }).then((data) => {
         const updatedAt = data.data.updateVentureCapitalist.updated_at
+        const slug = data.data.updateVentureCapitalist.slug
         if (updatedAt !== this.props.data.getVentureCapitalist.updated_at) {
+          if (slug !== this.props.data.getVentureCapitalist.slug) {
+            this.props.history.push(`/venture-capitalists/${slug}`);
+          }
           this.toggleEdit();
           this.props.data.refetch();
         }

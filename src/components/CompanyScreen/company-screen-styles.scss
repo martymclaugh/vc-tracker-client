@@ -5,7 +5,17 @@
     margin-left: 47%;
     margin-top: 20%;
   }
-  &__form {
+  &__form-vc {
+    .input__container {
+      input, textarea {
+        padding: 0;
+      }
+    }
+    .button {
+      margin-top: 0 !important;
+    }
+  }
+  &__form, &__form-vc {
     @include grid-col(12, 20);
     margin: 0 auto;
     float: none;

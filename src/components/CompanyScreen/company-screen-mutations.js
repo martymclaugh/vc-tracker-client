@@ -26,3 +26,36 @@ export const destroyCompany = gql`
     }
   }
 `;
+
+export const createVentureCapitalist = gql`
+  mutation createVentureCapitalist(
+    $companyId: ID!,
+    $name: String!,
+    $affiliation: String!,
+    $website: String!,
+    $contact: String!,
+    $check_size: Int!,
+    $investments_per_year: Int!,
+    $status: String!,
+    $location: String!,
+    $potential: String!,
+    $interests: String!,
+  ) {
+    createVentureCapitalist(
+      companyId: $companyId
+      name: $name,
+      affiliation: $affiliation,
+      website: $website,
+      contact: $contact,
+      check_size: $check_size,
+      investments_per_year: $investments_per_year,
+      status: $status,
+      location: $location,
+      potential: $potential,
+      interests: $interests,
+    ) {
+      slug,
+      updated_at,
+    }
+  }
+`;

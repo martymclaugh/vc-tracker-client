@@ -16,6 +16,9 @@ class VentureCapitalistList extends Component<Props, State> {
   }
   renderVentureCapitalists: () => void;
   renderVentureCapitalists() {
+    if (this.props.investors.length === 0) {
+      return <div className="vc__list-placeholder">No Potential VCs Yet...</div>
+    }
     if (this.props.investors) {
       return this.props.investors.map(investor => (
         <div key={investor.slug} className="vc__list-item">
@@ -40,6 +43,7 @@ class VentureCapitalistList extends Component<Props, State> {
     const descriptors = ['name', 'contact', 'location', 'potential', 'status', 'check size'];
     return descriptors.map(desc => (
       <button
+        key={desc}
         onClick={() => this.handleSort(desc.split(' ').join('_'))}
         className={`item vc__${desc.split(' ').join('-')}`}
       >
@@ -50,6 +54,7 @@ class VentureCapitalistList extends Component<Props, State> {
   render() {
     return (
       <div className="vc__list">
+        <button onClick={() => this.props.handleAddClick()} className="vc__list-add">+</button>
         <div className="vc__list-title">List of VCs:</div>
         <div className="vc__item vc__item-descriptors">
           {this.renderDescriptors()}

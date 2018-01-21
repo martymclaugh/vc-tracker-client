@@ -5,8 +5,9 @@ import { withRouter } from 'react-router-dom';
 import { graphql, compose } from 'react-apollo';
 import { RingLoader } from 'react-spinners';
 import { fetchCompany } from './company-screen-queries';
-import { updateCompany, destroyCompany } from './company-screen-mutations';
+import { updateCompany, destroyCompany, createVentureCapitalist } from './company-screen-mutations';
 import { initialFormState, companyInputs } from '../../helpers/company-inputs';
+import { initialFormState as vcInitialFormState, vcInputs } from '../../helpers/vc-inputs';
 import parseQueryParams from '../../helpers/parse-query-params';
 import CompanyDisplay from './CompanyDisplay/CompanyDisplay';
 import VentureCapitalistList from '../VentureCapitalistList/VentureCapatalistList';
@@ -28,8 +29,10 @@ class CompanyScreen extends Component<Props, State> {
 
     this.handleUpdateCompany = this.handleUpdateCompany.bind(this);
     this.handleDeleteCompany = this.handleDeleteCompany.bind(this);
+    this.toggleVCForm = this.toggleVCForm.bind(this);
     this.toggleEdit = this.toggleEdit.bind(this);
     this.refetchByOrder = this.refetchByOrder.bind(this);
+    this.handleCreateVC = this.handleCreateVC.bind(this);
   }
   componentWillReceiveProps(nextProps) {
     // handle company not found
@@ -42,14 +45,29 @@ class CompanyScreen extends Component<Props, State> {
       }
     }).then((data) => {
         const updatedAt = data.data.updateCompany.updatedAt
+        const slug = data.data.updateCompany.slug
         if (updatedAt !== this.props.data.getCompany.updated_at) {
           this.toggleEdit();
           this.props.data.refetch();
+          if (slug !== this.props.data.getCompany.slug) {
+            this.props.history.push(`/companies/${slug}`);
+          }
         }
       });
   }
- handleDeleteCompany: (slug: string) => void;
- handleDeleteCompany(slug) {
+  handleCreateVC: () => void;
+  handleCreateVC(args) {
+    this.props.createVentureCapitalist({ variables: {
+      companyId: this.props.data.getCompany.slug,
+      ...args,
+    } })
+      .then((data) => {
+        this.setState({ display: 'show' });
+        this.props.data.refetch();
+      });
+  }
+  handleDeleteCompany: (slug: string) => void;
+  handleDeleteCompany(slug) {
   this.props.destroyCompany({ variables: { id: slug }})
     .then((data) => {
       data.data.destroyCompany.slug && this.props.history.push(`/`);
@@ -58,6 +76,11 @@ class CompanyScreen extends Component<Props, State> {
   toggleEdit: () => void;
   toggleEdit() {
     const display = this.state.display === 'show' ? 'edit' : 'show';
+    this.setState({ display });
+  }
+  toggleVCForm: () => void;
+  toggleVCForm() {
+    const display = this.state.display === 'show' ? 'new' : 'show';
     this.setState({ display });
   }
   refetchByOrder: () => void;
@@ -103,6 +126,18 @@ class CompanyScreen extends Component<Props, State> {
           <Button class="company-screen__form-cancel" onClick={() => this.toggleEdit()}>Cancel</Button>
         </div>
       )
+    } else if (this.state.display === 'new') {
+      return (
+        <div className="company-screen__form-vc">
+          <Form
+            onSubmit={this.handleCreateVC}
+            inputs={vcInputs}
+            initialFormState={vcInitialFormState}
+            formType="venture-capitalist"
+          />
+          <Button class="company-screen__form-cancel" onClick={() => this.toggleEdit()}>Cancel</Button>
+        </div>
+      )
     }
     return (
       <div className="company-screen">
@@ -116,23 +151,26 @@ class CompanyScreen extends Component<Props, State> {
           onEditClick={this.toggleEdit}
         />
         <VentureCapitalistList
+          handleAddClick={this.toggleVCForm}
           investors={ventureCapitalists}
           refetchByOrder={this.refetchByOrder}
         />
       </div>
     )
   }
-}
+  }
 
 export default compose(
-graphql(updateCompany, { name: 'updateCompany' }),
-graphql(destroyCompany, { name: 'destroyCompany' }),
-graphql(fetchCompany, {
-  options: (ownProps) => ({
-    variables: {
-      id: ownProps.match.params.slug,
-      order_by: parseQueryParams(ownProps.location.search).order,
-      ascending: parseQueryParams(ownProps.location.search).ascending,
-    }
+  graphql(updateCompany, { name: 'updateCompany' }),
+  graphql(destroyCompany, { name: 'destroyCompany' }),
+  graphql(createVentureCapitalist, { name: 'createVentureCapitalist' }),
+  graphql(fetchCompany, {
+    options: (ownProps) => ({
+      variables: {
+        id: ownProps.match.params.slug,
+        order_by: parseQueryParams(ownProps.location.search).order,
+        ascending: parseQueryParams(ownProps.location.search).ascending,
+      }
+    }),
   }),
-}))(withRouter(CompanyScreen))
+)(withRouter(CompanyScreen))
