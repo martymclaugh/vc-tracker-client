@@ -1,7 +1,8 @@
 export default (date) => {
   const dateNow = Date.parse(new Date());
+  const timezoneOffset = new Date().getTimezoneOffset()
   const dateFuture = Date.parse(new Date(date));
-  let timeLeft = Math.abs(dateFuture - dateNow) / 1000;
+  let timeLeft = (Math.abs(dateFuture - dateNow) / 1000) + (timezoneOffset * 60);
 
   const days = Math.floor(timeLeft / 86400);
   timeLeft -= days * 86400;
