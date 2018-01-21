@@ -35,7 +35,6 @@ class Form extends Component<Props, State> {
     let blankInputs = 0;
     Object.keys(this.state.form).forEach(key => {
       if (!this.state.form[key] && this.state.form[key] !== 0) {
-        console.log(key);
         blankInputs ++
       }
     });
