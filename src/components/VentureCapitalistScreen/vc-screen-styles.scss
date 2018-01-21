@@ -1,0 +1,53 @@
+@import '../../assets/styles/settings.scss';
+
+.loading {
+  margin-left: 47%;
+  margin-top: 20%;
+}
+.vc-screen {
+  &__form {
+    @include grid-col(12, 20);
+    margin: 0 auto;
+    float: none;
+    text-align: center;
+    margin-bottom: 4rem !important;
+
+    @media screen and (min-width: $tablet-small) {
+      @include grid-col(6, 0)
+      float: none;
+      margin: 0 auto;
+    }
+
+    .button {
+      margin-top: 1rem;
+    }
+    .input__container {
+      input, textarea {
+        padding: 0;
+      }
+    }
+
+    &-delete {
+      color: red;
+      border: 2px solid red;
+    }
+    &-cancel {
+      color: #00FFFF;
+      border: 2px solid #00FFFF;
+    }
+    &-delete, &-cancel {
+      width: 48%;
+      font-family: $default-font-family;
+      font-size: 1.4rem;
+      background: none;
+      cursor: pointer;
+      padding: 0.5rem 1rem;
+      margin: 0 0.2rem;
+      margin-top: 0 !important;
+
+      &:hover {
+        opacity: 0.7;
+      }
+    }
+  }
+}
