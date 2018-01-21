@@ -5,24 +5,16 @@ import Input from '../../shared/Input/Input';
 import Button from '../../shared/Button/Button';
 import { Props, State } from '../../../flow/shared/company-form-types';
 
-import companyInputs from './company-inputs';
-
-class CompanyForm extends Component<Props, State> {
+class Form extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
     this.state = {
-      form: {
-        name: null,
-        description: null,
-        budget: null,
-        raised: null,
-        timeline: null,
-      },
+      form: props.initialFormState,
       error: '',
     };
 
-    this.handleCreateCompany = this.handleCreateCompany.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.renderInputs = this.renderInputs.bind(this);
   }
@@ -33,10 +25,9 @@ class CompanyForm extends Component<Props, State> {
           ...defaultValues
         }
       });
-      console.log(this.state);
   }
-  handleCreateCompany: (event: any) => void;
-  handleCreateCompany(event: any) {
+  handleSubmit: (event: any) => void;
+  handleSubmit(event: any) {
     event.preventDefault();
     // check inputs for values
     let blankInputs = 0;
@@ -44,7 +35,6 @@ class CompanyForm extends Component<Props, State> {
       if (!this.state.form[key] && this.state.form[key] !== 0) {
         blankInputs ++
       }
-      console.log(this.state.form[key], blankInputs);
     });
     const error = blankInputs > 0 && 'All fields are required'
     this.setState({ error });
@@ -58,9 +48,9 @@ class CompanyForm extends Component<Props, State> {
     let val;
     const value = e.target.value
 
-    if (companyInputs[field].type === 'number') {
+    if (this.props.inputs[field].type === 'number') {
       val = parseInt(value, 10);
-    } else if (companyInputs[field].type === 'date') {
+    } else if (this.props.inputs[field].type === 'date') {
       val = new Date(value)
     } else {
       val = value
@@ -75,28 +65,29 @@ class CompanyForm extends Component<Props, State> {
   }
   renderInputs: () => void;
   renderInputs() {
-    const { defaultValues } = this.props;
-    return Object.keys(companyInputs).map(key => (
+    const { defaultValues, inputs, formType } = this.props;
+    return Object.keys(inputs).map(key => (
       <Input
-        key={`company ${companyInputs[key].field}`}
+        key={`${formType} ${inputs[key].field}`}
         handleKeyPress={this.handleKeyPress}
-        placeholder={companyInputs[key].placeholder}
-        field={companyInputs[key].field}
-        textArea={companyInputs[key].textArea}
-        type={companyInputs[key].type}
-        prefix={companyInputs[key].prefix}
+        placeholder={inputs[key].placeholder}
+        field={inputs[key].field}
+        textArea={inputs[key].textArea}
+        dropdown={inputs[key].dropdown}
+        options={inputs[key].options}
+        type={inputs[key].type}
+        prefix={inputs[key].prefix}
         defaultValue={defaultValues && defaultValues[key]}
       />
     ))
   }
   render() {
     const error = this.state.error && <div className="error">{this.state.error}</div>
-    console.log(this.state);
     return (
-      <div className="company-form">
-        <form action="." onSubmit={(event) => this.handleCreateCompany(event)}>
+      <div className={`${this.props.formType}-form`}>
+        <form action="." onSubmit={(event) => this.handleSubmit(event)}>
           {this.renderInputs()}
-          <Button onClick={(e) => this.handleCreateCompany(e)}>
+          <Button onClick={(e) => this.handleSubmit(e)}>
             Submit
           </Button>
         </form>
@@ -106,4 +97,4 @@ class CompanyForm extends Component<Props, State> {
   }
 }
 
-export default CompanyForm;
+export default Form;

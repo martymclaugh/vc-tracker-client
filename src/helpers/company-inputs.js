@@ -1,4 +1,12 @@
-const companyInputs = {
+export const initialFormState = {
+  name: null,
+  description: null,
+  budget: null,
+  raised: null,
+  timeline: null,
+}
+
+export const companyInputs = {
   name: {
     field: 'name',
     placeholder: 'Company Name',
@@ -26,5 +34,3 @@ const companyInputs = {
     type: 'date',
   },
 };
-
-export default companyInputs;

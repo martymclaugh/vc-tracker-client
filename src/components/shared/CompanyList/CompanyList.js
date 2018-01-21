@@ -7,7 +7,7 @@ import { Props } from '../../../flow/shared/company-list-types';
 const renderCompanies = (companies) => {
   if (companies) {
     return companies.map(company => (
-      <Link to={`/company/${company.slug}`}>
+      <Link to={`/companies/${company.slug}`}>
         <div key={company.slug} className="company/">
           <span>{company.name}  </span>
           <span>{company.raised}  </span>

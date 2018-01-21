@@ -5,10 +5,11 @@ import { withRouter } from 'react-router-dom';
 import { graphql, compose } from 'react-apollo';
 import { fetchCompany } from './company-screen-queries';
 import { updateCompany, destroyCompany } from './company-screen-mutations';
+import { initialFormState, companyInputs } from '../../helpers/company-inputs';
 import CompanyDisplay from './CompanyDisplay/CompanyDisplay';
-import VentureCapitalistList from '../VentureCapitalist/VentureCapatalistList';
+import VentureCapitalistList from '../VentureCapitalistList/VentureCapatalistList';
 import Button from '../shared/Button/Button';
-import CompanyForm from '../shared/CompanyForm/CompanyForm';
+import Form from '../shared/Form/Form';
 import { Props, State } from '../../flow/components/company-screen-types'
 
 class CompanyScreen extends Component<Props, State> {
@@ -21,11 +22,10 @@ class CompanyScreen extends Component<Props, State> {
 
     this.handleUpdateCompany = this.handleUpdateCompany.bind(this);
     this.handleDeleteCompany = this.handleDeleteCompany.bind(this);
-    this.handleEditClick = this.handleEditClick.bind(this);
+    this.toggleEdit = this.toggleEdit.bind(this);
   }
   componentWillReceiveProps(nextProps) {
     // handle company not found
-    console.log('NEXT', nextProps.data.error);
   }
   handleUpdateCompany: () => void;
   handleUpdateCompany(args) {
@@ -36,20 +36,20 @@ class CompanyScreen extends Component<Props, State> {
     }).then((data) => {
         const updatedAt = data.data.updateCompany.updatedAt
         if (updatedAt !== this.props.data.getCompany.updated_at) {
-          this.handleEditClick();
+          this.toggleEdit();
           this.props.data.refetch();
         }
       });
   }
   handleDeleteCompany: (slug: string) => void;
-   handleDeleteCompany(slug) {
-    this.props.destroyCompany({ variables: { id: slug }
-    }).then((data) => {
-        data.data.destroyCompany.slug && this.props.history.push(`/`);
-      });
+ handleDeleteCompany(slug) {
+  this.props.destroyCompany({ variables: { id: slug }})
+    .then((data) => {
+      data.data.destroyCompany.slug && this.props.history.push(`/`);
+    });
   }
-  handleEditClick: () => void;
-  handleEditClick() {
+  toggleEdit: () => void;
+  toggleEdit() {
     const display = this.state.display === 'show' ? 'edit' : 'show';
     this.setState({ display });
   }
@@ -71,12 +71,15 @@ class CompanyScreen extends Component<Props, State> {
     if (this.state.display === 'edit') {
       return (
         <div className="company-screen__form">
-          <CompanyForm
+          <Form
             onSubmit={this.handleUpdateCompany}
+            inputs={companyInputs}
+            initialFormState={initialFormState}
+            formType="company"
             defaultValues={{ budget, raised, description, name, timeline }}
           />
           <Button onClick={() => this.handleDeleteCompany(slug)}>Delete</Button>
-          <Button onClick={() => this.handleEditClick()}>Cancel</Button>
+          <Button onClick={() => this.toggleEdit()}>Cancel</Button>
         </div>
       )
     }
@@ -90,7 +93,7 @@ class CompanyScreen extends Component<Props, State> {
           description={description}
           timeline={timeline}
           slug={slug}
-          onEditClick={this.handleEditClick}
+          onEditClick={this.toggleEdit}
         />
         <VentureCapitalistList
           investors={ventureCapitalists}
