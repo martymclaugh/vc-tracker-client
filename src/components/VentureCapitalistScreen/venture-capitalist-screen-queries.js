@@ -4,6 +4,7 @@ export const fetchVentureCapitalist = gql`
   query getVentureCapitalist($id: ID) {
     getVentureCapitalist(id: $id) {
       name,
+      slug,
       affiliation,
       website,
       contact,
@@ -13,6 +14,7 @@ export const fetchVentureCapitalist = gql`
       location,
       potential,
       interests,
+      updated_at,
       notes {
        description,
       },
