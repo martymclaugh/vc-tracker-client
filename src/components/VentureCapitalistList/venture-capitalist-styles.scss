@@ -4,8 +4,38 @@
   &__list {
     border-radius: 3px;
     padding: 20px;
+    position: relative;
 
-    &-title {
+    &-add {
+      position: absolute;
+      border: none;
+      background-color: #25325D;
+      color: #FFFFFF;
+      font-size: 2rem;
+      font-weight: 900;
+      top: 1px;
+      right: 20px;
+      padding: 0.5rem 2rem;
+      border-top-right-radius: 10px;
+      border-top-left-radius: 10px;
+      cursor: pointer;
+
+      &:hover {
+        opacity: 0.7;
+      }
+    }
+    &-container {
+      width: 100%;
+    }
+    &-placeholder {
+      min-height: 18rem;
+      text-align: center;
+      background-color: #25325D;
+      width: 100%;
+      padding-top: 1rem;
+    }
+
+    &-title, &-placeholder {
       font-family: $default-font-family;
       font-size: 1.4rem;
       letter-spacing: 0.2rem;
