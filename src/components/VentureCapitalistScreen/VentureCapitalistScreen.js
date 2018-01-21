@@ -1,15 +1,21 @@
+// @flow
+
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { graphql, compose } from 'react-apollo';
-import { fetchVentureCapitalist } from './venture-capitalis-screen-queries';
+import { RingLoader } from 'react-spinners';
+import { fetchVentureCapitalist } from './venture-capitalist-screen-queries';
 import { updateVentureCapitalist, destroyVentureCapitalist } from './venture-capitalist-screen-mutations';
 import { vcInputs, initialFormState } from '../../helpers/vc-inputs';
 import VentureCapatalistDisplay from './VentureCapitalistDisplay/VentureCapitalistDisplay';
 import Form from '../shared/Form/Form';
 import Button from '../shared/Button/Button';
+import { Props, State } from '../../flow/components/vc-screen-types'
+
+import './vc-screen-styles.css';
 
 
-class VentureCapitalistScreen extends Component {
+class VentureCapitalistScreen extends Component<Props, State> {
   constructor(props) {
     super(props);
 
@@ -24,7 +30,6 @@ class VentureCapitalistScreen extends Component {
 
   handleUpdateVC: () => void;
   handleUpdateVC(args) {
-    console.log(this.props.data.getVentureCapitalist.slug);
     this.props.updateVentureCapitalist({ variables: {
         id: this.props.data.getVentureCapitalist.slug,
         ...args,
@@ -37,7 +42,7 @@ class VentureCapitalistScreen extends Component {
         }
       });
   }
-  handleDeleteVC: () => void;
+  handleDeleteVC: (slug: string) => void;
   handleDeleteVC(slug) {
     this.props.destroyVentureCapitalist({ variables: { id: slug }})
       .then((data) => {
@@ -51,7 +56,11 @@ class VentureCapitalistScreen extends Component {
   }
   render() {
     if (this.props.data.loading) {
-      return <div>loading...</div>
+      return (
+        <div className="loading">
+          <RingLoader color={'#004a6d'} />
+        </div>
+      )
     }
     const ventureCapitalist = this.props.data.getVentureCapitalist;
     if (this.state.display === 'edit') {
@@ -66,19 +75,23 @@ class VentureCapitalistScreen extends Component {
             formType="venture-capitalist"
             defaultValues={this.props.data.getVentureCapitalist}
           />
-          <Button onClick={() => this.handleDeleteVC(slug)}>Delete</Button>
-          <Button onClick={() => this.toggleEdit()}>Cancel</Button>
+          <Button class="vc-screen__form-delete" onClick={() => this.handleDeleteVC(slug)}>Delete</Button>
+          <Button class="vc-screen__form-cancel" onClick={() => this.toggleEdit()}>Cancel</Button>
         </div>
       )
     }
-    return (
-      <div className="vc-screen">
-        <VentureCapatalistDisplay
-          onEditClick={this.toggleEdit}
-          ventureCapitalist={ventureCapitalist}
-        />
-      </div>
-    )
+    if (ventureCapitalist) {
+      return (
+        <div className="vc-screen">
+          <VentureCapatalistDisplay
+            onEditClick={this.toggleEdit}
+            ventureCapitalist={ventureCapitalist}
+          />
+        </div>
+      )
+    }
+
+    return null;
   }
 }
 
