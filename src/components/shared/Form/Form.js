@@ -5,6 +5,8 @@ import Input from '../../shared/Input/Input';
 import Button from '../../shared/Button/Button';
 import { Props, State } from '../../../flow/shared/company-form-types';
 
+import './form-styles.css';
+
 class Form extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
@@ -33,6 +35,7 @@ class Form extends Component<Props, State> {
     let blankInputs = 0;
     Object.keys(this.state.form).forEach(key => {
       if (!this.state.form[key] && this.state.form[key] !== 0) {
+        console.log(key);
         blankInputs ++
       }
     });
@@ -70,16 +73,10 @@ class Form extends Component<Props, State> {
       <Input
         key={`${formType} ${inputs[key].field}`}
         handleKeyPress={this.handleKeyPress}
-        placeholder={inputs[key].placeholder}
-        field={inputs[key].field}
-        textArea={inputs[key].textArea}
-        dropdown={inputs[key].dropdown}
-        options={inputs[key].options}
-        type={inputs[key].type}
-        prefix={inputs[key].prefix}
         defaultValue={defaultValues && defaultValues[key]}
+        {...inputs[key]}
       />
-    ))
+    ));
   }
   render() {
     const error = this.state.error && <div className="error">{this.state.error}</div>
