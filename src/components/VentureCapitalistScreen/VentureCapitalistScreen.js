@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-import { fetchVentureCapitalist } from './venture-capitalist-queries';
 import { graphql, compose } from 'react-apollo';
+import { fetchVentureCapitalist } from './venture-capitalis-screen-queries';
+import { updateVentureCapitalist, destroyVentureCapitalist } from './venture-capitalist-screen-mutations';
 import { vcInputs, initialFormState } from '../../helpers/vc-inputs';
 import VentureCapatalistDisplay from './VentureCapitalistDisplay/VentureCapitalistDisplay';
 import Form from '../shared/Form/Form';
@@ -22,12 +23,26 @@ class VentureCapitalistScreen extends Component {
   }
 
   handleUpdateVC: () => void;
-  handleUpdateVC() {
-
+  handleUpdateVC(args) {
+    console.log(this.props.data.getVentureCapitalist.slug);
+    this.props.updateVentureCapitalist({ variables: {
+        id: this.props.data.getVentureCapitalist.slug,
+        ...args,
+      }
+    }).then((data) => {
+        const updatedAt = data.data.updateVentureCapitalist.updated_at
+        if (updatedAt !== this.props.data.getVentureCapitalist.updated_at) {
+          this.toggleEdit();
+          this.props.data.refetch();
+        }
+      });
   }
   handleDeleteVC: () => void;
-  handleDeleteVC() {
-
+  handleDeleteVC(slug) {
+    this.props.destroyVentureCapitalist({ variables: { id: slug }})
+      .then((data) => {
+        data.data.destroyVentureCapitalist.slug && this.props.history.push(`/`);
+      });
   }
   toggleEdit: () => void;
   toggleEdit() {
@@ -35,38 +50,13 @@ class VentureCapitalistScreen extends Component {
     this.setState({ display });
   }
   render() {
-    console.log(this.state);
     if (this.props.data.loading) {
       return <div>loading...</div>
     }
     const ventureCapitalist = this.props.data.getVentureCapitalist;
     if (this.state.display === 'edit') {
-      const {
-        name,
-        affiliation,
-        website,
-        contact,
-        check_size,
-        investments_per_year,
-        status,
-        location,
-        potential,
-        slug,
-        interests,
-      } = this.props.data.getVentureCapitalist;
-      const defaultValues = {
-        name,
-        affiliation,
-        website,
-        contact,
-        check_size,
-        investments_per_year,
-        status,
-        location,
-        potential,
-        slug,
-        interests,
-      }
+      const { slug } = this.props.data.getVentureCapitalist;
+
       return (
         <div className="vc-screen__form">
           <Form
@@ -74,7 +64,7 @@ class VentureCapitalistScreen extends Component {
             inputs={vcInputs}
             initialFormState={initialFormState}
             formType="venture-capitalist"
-            defaultValues={defaultValues}
+            defaultValues={this.props.data.getVentureCapitalist}
           />
           <Button onClick={() => this.handleDeleteVC(slug)}>Delete</Button>
           <Button onClick={() => this.toggleEdit()}>Cancel</Button>
@@ -93,8 +83,8 @@ class VentureCapitalistScreen extends Component {
 }
 
 export default compose(
-// graphql(updateCompany, { name: 'updateCompany' }),
-// graphql(destroyCompany, { name: 'destroyCompany' }),
+graphql(updateVentureCapitalist, { name: 'updateVentureCapitalist' }),
+graphql(destroyVentureCapitalist, { name: 'destroyVentureCapitalist' }),
 graphql(fetchVentureCapitalist, {
   options: (ownProps) => ({
     variables: {
