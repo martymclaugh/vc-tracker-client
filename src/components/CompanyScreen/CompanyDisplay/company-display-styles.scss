@@ -1,0 +1,38 @@
+@import '../../../assets/styles/settings.scss';
+
+.company-display {
+  position: relative;
+
+  &__edit {
+    color: #FFFFFF;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    font-size: 2rem;
+    border-radius: 50px;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+
+  &__name {
+    color: $link-orange;
+    font-size: 2rem;
+    font-family: $default-font-family;
+    font-weight: 400;
+    letter-spacing: 0.2rem;
+    text-align: center;
+    margin: 1rem 0;
+  }
+  &__description {
+    margin: 0 10rem;
+    margin-bottom: 1rem;
+    font-family: $default-font-family;
+    letter-spacing: 0.1rem;
+    text-align: center;
+    color: #FFFFFF;
+  }
+}

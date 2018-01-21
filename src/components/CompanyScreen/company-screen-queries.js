@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 
 export const fetchCompany = gql`
-  query getCompany($id: ID!) {
+  query getCompany($id: ID, $order_by: String, $size: Int, $ascending: String) {
     getCompany(id: $id) {
     	id,
   		name,
@@ -11,7 +11,7 @@ export const fetchCompany = gql`
       timeline,
       raised,
       updated_at,
-      ventureCapitalists {
+      ventureCapitalists(order_by: $order_by, size: $size, ascending: $ascending) {
         slug,
         name,
         affiliation,

@@ -3,14 +3,18 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { graphql, compose } from 'react-apollo';
+import { RingLoader } from 'react-spinners';
 import { fetchCompany } from './company-screen-queries';
 import { updateCompany, destroyCompany } from './company-screen-mutations';
 import { initialFormState, companyInputs } from '../../helpers/company-inputs';
+import parseQueryParams from '../../helpers/parse-query-params';
 import CompanyDisplay from './CompanyDisplay/CompanyDisplay';
 import VentureCapitalistList from '../VentureCapitalistList/VentureCapatalistList';
 import Button from '../shared/Button/Button';
 import Form from '../shared/Form/Form';
 import { Props, State } from '../../flow/components/company-screen-types'
+
+import './company-screen-styles.css';
 
 class CompanyScreen extends Component<Props, State> {
   constructor(props) {
@@ -18,11 +22,14 @@ class CompanyScreen extends Component<Props, State> {
 
     this.state = {
       display: 'show',
+      ascending: true,
+      order: 'id',
     }
 
     this.handleUpdateCompany = this.handleUpdateCompany.bind(this);
     this.handleDeleteCompany = this.handleDeleteCompany.bind(this);
     this.toggleEdit = this.toggleEdit.bind(this);
+    this.refetchByOrder = this.refetchByOrder.bind(this);
   }
   componentWillReceiveProps(nextProps) {
     // handle company not found
@@ -41,7 +48,7 @@ class CompanyScreen extends Component<Props, State> {
         }
       });
   }
-  handleDeleteCompany: (slug: string) => void;
+ handleDeleteCompany: (slug: string) => void;
  handleDeleteCompany(slug) {
   this.props.destroyCompany({ variables: { id: slug }})
     .then((data) => {
@@ -53,9 +60,24 @@ class CompanyScreen extends Component<Props, State> {
     const display = this.state.display === 'show' ? 'edit' : 'show';
     this.setState({ display });
   }
+  refetchByOrder: () => void;
+  refetchByOrder(order){
+    const ascending = this.state.order === order
+      && this.state.ascending === 'ASC' ? 'DESC' : 'ASC';
+    this.setState({
+      order,
+      ascending,
+    })
+    this.props.history.push({ search: `order=${order}&ascending=${ascending}` });
+    this.props.data.refetch();
+  }
   render() {
     if (this.props.data.loading) {
-      return <div className="loading">Loading....</div>
+      return (
+        <div className="loading">
+          <RingLoader color={'#004a6d'} />
+        </div>
+      )
     }
     const {
       slug,
@@ -65,7 +87,6 @@ class CompanyScreen extends Component<Props, State> {
       name,
       timeline,
       ventureCapitalists,
-      updated_at,
     } = this.props.data.getCompany;
 
     if (this.state.display === 'edit') {
@@ -78,12 +99,11 @@ class CompanyScreen extends Component<Props, State> {
             formType="company"
             defaultValues={{ budget, raised, description, name, timeline }}
           />
-          <Button onClick={() => this.handleDeleteCompany(slug)}>Delete</Button>
-          <Button onClick={() => this.toggleEdit()}>Cancel</Button>
+          <Button class="company-screen__form-delete" onClick={() => this.handleDeleteCompany(slug)}>Delete</Button>
+          <Button class="company-screen__form-cancel" onClick={() => this.toggleEdit()}>Cancel</Button>
         </div>
       )
     }
-
     return (
       <div className="company-screen">
         <CompanyDisplay
@@ -97,6 +117,7 @@ class CompanyScreen extends Component<Props, State> {
         />
         <VentureCapitalistList
           investors={ventureCapitalists}
+          refetchByOrder={this.refetchByOrder}
         />
       </div>
     )
@@ -109,7 +130,9 @@ graphql(destroyCompany, { name: 'destroyCompany' }),
 graphql(fetchCompany, {
   options: (ownProps) => ({
     variables: {
-      id: ownProps.match.params.slug
+      id: ownProps.match.params.slug,
+      order_by: parseQueryParams(ownProps.location.search).order,
+      ascending: parseQueryParams(ownProps.location.search).ascending,
     }
   }),
 }))(withRouter(CompanyScreen))

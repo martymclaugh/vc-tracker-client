@@ -1,0 +1,50 @@
+@import '../../../assets/styles/settings.scss';
+
+.company-list {
+  margin-top: 3rem;
+  width: 100%;
+
+  &__item {
+    @include grid-col(12, 0);
+    background-color: $dark-gray;
+    border-bottom: 1px solid $darker-gray;
+    padding: 1rem;
+
+    &:hover {
+      box-shadow: $inset-shadow;
+      background: rgba(259, 255, 255, 0.3);
+    }
+  }
+  .company {
+    &__title {
+      text-align: center;
+      @include grid-col(12, 0)
+
+      @media screen and (min-width: $tablet-small) {
+        text-align: left;
+        @include grid-col(6, 0)
+      }
+    }
+    &__raised, &__timeline {
+      @include grid-col(3, 0);
+      display: none;
+    }
+    &__raised {
+      @media screen and (min-width: $tablet-small) {
+        display: block
+      }
+    }
+    &__timeline {
+      @media screen and (min-width: $tablet-medium) {
+        display: block
+      }
+    }
+    &__title, &__raised, &__timeline {
+      color: $link-orange;
+      font-family: $default-font-family;
+      letter-spacing: 0.1rem;
+      font-weight: 400;
+      text-decoration: none;
+    }
+  }
+}

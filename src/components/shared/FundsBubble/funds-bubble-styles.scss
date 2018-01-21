@@ -1,0 +1,46 @@
+@import '../../../assets/styles/settings.scss';
+
+.funds-bubble {
+  position: relative;
+  height: 3rem;
+  margin: 1rem 0;
+
+  &__container {
+    background-color: #FFFFFF;
+    border: 1px solid #000000;
+    border-radius: 50px;
+    width: 15rem;
+    height: 3rem;
+    z-index: 1;
+  }
+
+  &__bubble-fill {
+    background-color: green;
+    border: 1px solid #000000;
+    border-right: none;
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;
+    height: 3rem;
+    z-index: 2;
+  }
+  &__raised, &__bubble-fill, &__container {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    margin-left: -7.5rem;
+    right: 0;
+  }
+  &__raised {
+    font-size: 2rem;
+    font-family: $default-font-family;
+    z-index: 3;
+    margin-left: -5.75rem;
+    margin-top: 0.5rem;
+  }
+  &__budget {
+    font-size: 1rem;
+    font-family: $default-font-family;
+    color: #FFFFFF;
+    text-align: center;
+  }
+}

@@ -1,0 +1,16 @@
+@import '../../../assets/styles/settings.scss';
+
+.countdown {
+  text-transform: capitalize;
+  color: white;
+  text-align: center;
+  font-size: 2rem;
+  font-family: $default-font-family;
+  font-weight: 300;
+  letter-spacing: 0.1rem;
+
+  &__title {
+    font-size: 1.4rem;
+    margin-bottom: 0.2rem;
+  }
+}

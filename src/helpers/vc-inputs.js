@@ -37,7 +37,6 @@ export const vcInputs = {
   check_size: {
     field: 'check_size',
     placeholder: 'Typical Check Size',
-    prefix: '$',
     type: 'number',
   },
   investments_per_year: {

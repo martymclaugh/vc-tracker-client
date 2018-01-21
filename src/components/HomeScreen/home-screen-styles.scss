@@ -1,0 +1,41 @@
+@import '../../assets/styles/settings.scss';
+
+.home-screen {
+  text-align: center;
+
+  &__form {
+    @include grid-col(12, 20);
+    margin: 0 auto;
+    float: none;
+
+    @media screen and (min-width: $tablet-small) {
+      @include grid-col(6, 0)
+      float: none;
+      margin: 0 auto;
+    }
+  }
+  .headline, .create-link {
+    font-size: 1.4rem;
+    margin-top: 1rem;
+    font-weight: 400;
+    letter-spacing: 0.1rem;
+  }
+  .create-link {
+    margin-top: 4rem;
+    color: $link-orange;
+    font-weight: 500;
+    cursor: pointer;
+    background: none;
+    border: none;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+  &__title, .headline {
+    color: #FFFFFF;
+  }
+  .button {
+    margin-top: 1rem;
+  }
+}

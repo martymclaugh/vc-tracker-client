@@ -1,0 +1,29 @@
+@import '../../../assets/styles/settings.scss';
+
+.vc-display {
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 1.7rem;
+  font-family: $default-font-family;
+  position: relative;
+  margin-top: 2rem;
+
+  .item {
+    margin: 1rem 0;
+  }
+
+  &__edit {
+    color: #FFFFFF;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    font-size: 2rem;
+    border-radius: 50px;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+}

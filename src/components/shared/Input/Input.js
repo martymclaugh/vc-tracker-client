@@ -3,11 +3,13 @@
 import React from 'react';
 import { Props } from '../../../flow/shared/input-types';
 
+import './input-styles.css';
+
 const renderInput = (props) => {
   if (props.textArea) {
     return (
       <textarea cols="30" rows="5"
-        className={`input input__${props.field}`}
+        className={`input-textarea input__${props.field}`}
         defaultValue={props.defaultValue}
         placeholder={props.placeholder}
         onChange={(e) => props.handleKeyPress(e, props.field)}
@@ -17,7 +19,7 @@ const renderInput = (props) => {
   if (props.dropdown) {
     const options = props.options.map(option => <option value={option}>{option}</option>)
     return (
-      <select>
+      <select className={`input-select input__${props.field}`}>
         {options}
       </select>
     )
@@ -25,7 +27,7 @@ const renderInput = (props) => {
   return (
     <input
       defaultValue={props.defaultValue}
-      className="input"
+      className="input-text"
       placeholder={props.placeholder}
       onChange={(e) => props.handleKeyPress(e, props.field)}
       type={props.type || 'text'}
@@ -33,7 +35,7 @@ const renderInput = (props) => {
   );
 }
 export default (props: Props) => (
-  <div className="input__container">
+  <div className={`input__container ${props.field}`}>
     {props.title && <div className="input__title">{props.title}</div>}
     {props.prefix && <span className="prefix">{props.prefix}</span>}
     {renderInput(props)}

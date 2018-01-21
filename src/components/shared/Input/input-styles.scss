@@ -1,0 +1,23 @@
+@import '../../../assets/styles/settings.scss';
+
+.input {
+  &__container {
+    &.timeline {
+      .input {
+        &__title {
+          font-size: 1.3rem;
+          @include grid-col(3, 20);
+        }
+      }
+      input {
+        @include grid-col(8, 30);
+      }
+    }
+  }
+  &__title {
+    color: #FFFFFF;
+    letter-spacing: 0.1rem;
+    font-size: 1.2rem;
+    font-weight: 400;
+  }
+}

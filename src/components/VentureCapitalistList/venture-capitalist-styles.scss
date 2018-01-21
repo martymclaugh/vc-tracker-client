@@ -2,14 +2,120 @@
 
 .vc {
   &__list {
+    border-radius: 3px;
+    padding: 20px;
 
+    &-title {
+      font-family: $default-font-family;
+      font-size: 1.4rem;
+      letter-spacing: 0.2rem;
+      color: #FFFFFF;
+      text-align: center;
+      margin-bottom: 0.5rem;
+    }
+    &-container {
+      overflow-y: scroll;
+      margin-bottom: 5rem;
+      float: left;
+      height: 20rem;
+    }
+    &-item {
+      @include grid-col(12, 0)
+      background-color: #25325D;
+      border-bottom: 1px solid $dark-gray;
+      height: 2rem;
+
+      .item {
+        color: $link-orange;
+        @include grid-col(4, 20);
+        overflow-x: hidden;
+        font-family: $default-font-family;
+        font-weight: 300;
+        line-height: 2;
+        letter-spacing: 0.05;
+
+        @media screen and (min-width: $tablet-small) {
+          @include grid-col(3, 20)
+        }
+        @media screen and (min-width: $tablet-medium) {
+          @include grid-col(2.4, 15)
+        }
+        @media screen and (min-width: $tablet-large) {
+          @include grid-col(2, 10)
+        }
+      }
+      &:hover {
+        box-shadow: $inset-shadow;
+        opacity: 0.7;
+      }
+    }
   }
   &__item {
-    @include grid-col(12, 20)
+    &-descriptors {
+      @include grid-col(12, 0);
+      border-top-right-radius: 3px;
+      border-top-left-radius: 3px;
+      background-color: #004a6d;
+      overflow: hidden;
+      text-align: center;
+      border-bottom: 1px solid #FFFFFF;
 
-    .item {
-      display: inline-block;
-      @include grid-col(2, 10)
+      .item {
+        background: none;
+        border: none;
+        color: #FFFFFF;
+        letter-spacing: 0.08rem;
+        font-weight: 300;
+        font-family: $default-font-family;
+        font-size: 1.2rem;
+        border-right: 1px solid #FFFFFF;
+        padding: 0.5rem;
+        @include grid-col(4, 0);
+        padding: 0;
+        line-height: 2rem;
+        margin-left: -1px;
+        cursor: pointer;
+
+
+        @media screen and (min-width: $tablet-small) {
+          width: 25%;
+        }
+        @media screen and (min-width: $tablet-medium) {
+          width: 20%;
+        }
+        @media screen and (min-width: $tablet-large) {
+          width: 16.666%;
+        }
+        &:last-child {
+          border: none;
+        }
+
+        &:hover {
+          box-shadow: $inset-shadow;
+          opacity: 0.8;
+        }
+      }
+    }
+  }
+  &__contact {
+    display: none;
+
+    @media screen and (min-width: $tablet-large) {
+      display: block;
+    }
+  }
+  &__status {
+    display: none;
+
+    @media screen and (min-width: $tablet-small) {
+      display: block;
+    }
+  }
+  &__potential {
+    display: none;
+
+    @media screen and (min-width: $tablet-medium) {
+      display: block;
     }
   }
 }
