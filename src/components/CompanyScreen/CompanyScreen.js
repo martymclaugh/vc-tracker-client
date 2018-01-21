@@ -36,7 +36,6 @@ class CompanyScreen extends Component<Props, State> {
   }
   componentWillReceiveProps(nextProps) {
     // handle company not found
-    console.log(this.props);
   }
   handleUpdateCompany: () => void;
   handleUpdateCompany(args) {
@@ -46,9 +45,13 @@ class CompanyScreen extends Component<Props, State> {
       }
     }).then((data) => {
         const updatedAt = data.data.updateCompany.updatedAt
+        const slug = data.data.updateCompany.slug
         if (updatedAt !== this.props.data.getCompany.updated_at) {
           this.toggleEdit();
           this.props.data.refetch();
+          if (slug !== this.props.data.getCompany.slug) {
+            this.props.history.push(`/companies/${slug}`);
+          }
         }
       });
   }
