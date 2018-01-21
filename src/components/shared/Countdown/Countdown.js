@@ -34,23 +34,15 @@ class Countdown extends Component {
     this.countDown = setInterval(this.countDown, 1000);
   }
   countDown() {
-    let seconds = this.state.seconds > 0 ? this.state.seconds - 1 : 60
-    let minutes = this.state.seconds > 0 ? this.state.minutes : this.state.minutes - 1
-    if (this.state.minutes === 0 && this.state.seconds === 0){
-      minutes = 60;
-    }
-    let hours = this.state.minutes === 0 && this.state.seconds === 0 ? this.state.hours - 1 : this.state.hours
-    if (this.state.minutes === 0 && this.state.seconds === 0 && this.state.hours === 0) {
-      hours = 24;
-    }
-    let days = this.state.hours > 0 ? this.state.days : this.state.days - 1
-
-    this.setState({
-      seconds,
-      minutes,
-      hours,
+    const {
       days,
-    });
+      hours,
+      minutes,
+      seconds,
+    } = this.state;
+
+    this.setState(formatDate(this.props.date));
+
     if (seconds === 0 && minutes === 0 && hours === 0 && days === 0) {
       clearInterval(this.countDown);
     }
